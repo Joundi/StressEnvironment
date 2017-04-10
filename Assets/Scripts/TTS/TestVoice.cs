@@ -11,7 +11,7 @@ public class TestVoice : MonoBehaviour
 	public VoiceManager vm;
 	
 	public string textesay;
-	
+	/*
 	void Start ()
 	{
 		vm = GameObject.Find("VoiceManager").GetComponent<VoiceManager>();
@@ -37,6 +37,6 @@ public class TestVoice : MonoBehaviour
 			Debug.Log(" Actual stream <<<<<<<<<<<<<<<<<<<<<<<<<<<<<> " + vm.Status(3));
 			Debug.Log(" Position of the actual spoken word in the actual stream > " + vm.Status(1));
 		}
-	}
+	}*/
 	
 }

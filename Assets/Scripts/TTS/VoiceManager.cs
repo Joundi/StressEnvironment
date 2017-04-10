@@ -8,11 +8,14 @@ using UnityEngine;
 using System.Collections;
 using Microsoft.Win32;
 using System.Runtime.InteropServices;
+using UnityEngine.Assertions;
 
 // TODO: nettoyer ce bout de code pour qu'il soit plus simple a utiliser.
 
 public class VoiceManager : MonoBehaviour
 {
+    private static VoiceManager instance;
+
 	public int VoiceInit = 0;
 	public int VoiceNumber = 0;
 	public string[] VoiceNames;
@@ -64,8 +67,13 @@ public class VoiceManager : MonoBehaviour
 	// CUSTOM VOICE FLAG !!! ******************************************************************************************************************
 	
 	// Use this for initialization
-	void Start()
+	public void Start()
 	{
+        if (instance != null)
+            return;
+
+        instance = this;
+
 		// Info (64Bits OS):
 		// Executing Windows\sysWOW64\speech\SpeechUX\SAPI.cpl brings up a Window that displays (!) all of the 32 bit Voices
 		// and the current single 64 bit Voice "Anna".
