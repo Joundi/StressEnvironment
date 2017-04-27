@@ -1,0 +1,11 @@
+Lorsque l'évènement "voiture qui suit" est déclenché:
+
+Un object voiture est instancié derrière le joueur à quelques mètres.
+
+Dès l'instant où la vitesse de la voiture du joueur n'est pas nulle:
+
+La voiture du joueur créé un Gameobject "target" pour la voiture qui suit à intervale régulier, plus ou moins fréquemment en fonction de sa vitesse.
+
+La voiture qui suit se dirige toujours vers l'object "target" le plus proche. 
+
+Lorsqu'elle se trouve assez proche de l'objet target, elle le détruit et se dirige vers le suivant.
