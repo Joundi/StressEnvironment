@@ -5,11 +5,14 @@ using UnityEngine.Assertions;
 public class StressEvent_Aquaplane : StressEvent_Immediate
 {
     public GameObject rainDropController;
+    public Rigidbody carRigidbody;
     public UnityStandardAssets.Vehicles.Car.CarController carController;
 
     private Animator m_rainDropAnim;
     private float[] m_fOriginalForwardStiffness = new float[4];
     private float[] m_fOriginalSidewaysStiffness = new float[4];
+    private bool isRunning;
+    private float perturbationDelay;
 
     //------------------------------------------------------
     //  Initialization
@@ -30,8 +33,10 @@ public class StressEvent_Aquaplane : StressEvent_Immediate
             m_fOriginalForwardStiffness[i] = carController.WheelColliders[i].forwardFriction.stiffness;
             m_fOriginalSidewaysStiffness[i] = carController.WheelColliders[i].sidewaysFriction.stiffness;
         }
+
+        isRunning = false;
     }
-    
+
 
     //------------------------------------------------------
     //  Stress Event Start
@@ -53,6 +58,8 @@ public class StressEvent_Aquaplane : StressEvent_Immediate
             sidewaysFriction.stiffness = 0.1f;
             wheel.sidewaysFriction = sidewaysFriction;
         }
+        isRunning = true;
+        perturbationDelay = -1f;
     }
 
     //------------------------------------------------------
@@ -77,6 +84,17 @@ public class StressEvent_Aquaplane : StressEvent_Immediate
             WheelFrictionCurve sidewaysFriction = wheel.sidewaysFriction;
             sidewaysFriction.stiffness = m_fOriginalSidewaysStiffness[i];
             wheel.sidewaysFriction = sidewaysFriction;
+        }
+        isRunning = false;
+    }
+    void FixedUpdate(){
+        if (isRunning){
+            if (perturbationDelay < 0){
+                carRigidbody.AddTorque(transform.up * Random.Range(-1f, 1f) * 1000 * carRigidbody.velocity.magnitude);
+                perturbationDelay = Random.Range(0.5f, 1f);
+            } else {
+                perturbationDelay -= Time.fixedDeltaTime;
+            }
         }
     }
 }
