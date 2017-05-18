@@ -32,9 +32,9 @@ public class StressEvent_PassengerSpeak : StressEvent_Immediate
     {
         if (vm.Status(0) != 2 && speechStarted) // speech demarré et fini
         {
-
+            speechStarted = false;
+            EndEvent(); 
         }
-        EndEvent();
     }
 
     override public void EndEvent()
