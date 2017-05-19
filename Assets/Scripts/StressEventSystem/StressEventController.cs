@@ -27,7 +27,7 @@ public class StressEventController : MonoBehaviour
     public SEventKeyControl[] eventKeyControl;      // Set event start key and end key
 
     void Start()
-    { 
+    {
         // apply event times set in Inpector
         foreach (SEventTimeControl control in eventTimeControl)
         {
@@ -38,7 +38,7 @@ public class StressEventController : MonoBehaviour
     }
 
     //------------------------------------------------------
-    // 
+    //
     //------------------------------------------------------
     void Update()
     {

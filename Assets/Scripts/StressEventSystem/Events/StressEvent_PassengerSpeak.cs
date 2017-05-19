@@ -27,14 +27,15 @@ public class StressEvent_PassengerSpeak : StressEvent_Immediate
         vm.Say(speech);
         speechStarted = true;
     }
-
+    // Need a fix here to prevent from logging every frame
     private void Update()
     {
         if (vm.Status(0) != 2 && speechStarted) // speech demarré et fini
         {
 
         }
-        EndEvent();
+        // EndEvent should be called exclusively when the event ends
+        //EndEvent();
     }
 
     override public void EndEvent()
