@@ -13,6 +13,11 @@ public class StressEvent_Aquaplane : StressEvent_Immediate
     private float[] m_fOriginalSidewaysStiffness = new float[4];
     private bool isRunning;
     private float perturbationDelay;
+    public float DeclenchmentSpeed = 50;
+ //   public float Tolerance = 5;
+
+    private const float mphCoef = 2.23693629f;
+    private const float kmCoef = 3.6f;
 
     //------------------------------------------------------
     //  Initialization
@@ -87,12 +92,22 @@ public class StressEvent_Aquaplane : StressEvent_Immediate
         }
         isRunning = false;
     }
-    void FixedUpdate(){
-        if (isRunning){
-            if (perturbationDelay < 0){
-                carRigidbody.AddTorque(transform.up * Random.Range(-1f, 1f) * 1000 * carRigidbody.velocity.magnitude);
+    void FixedUpdate()
+    {
+       // if(carController.BrakeInput > 0)
+        {
+          //  Debug.Log(carController.CurrentSpeed/mphCoef*kmCoef);
+        }
+        if (isRunning)
+        {
+            if (perturbationDelay < 0 && carController.BrakeInput > 0 && carController.CurrentSpeed / mphCoef * kmCoef >= DeclenchmentSpeed)
+            {
+                Debug.Log("Applying aquaplanning stuff");
+                carRigidbody.AddTorque(transform.up * Random.Range(-1f, 1f) * 10000 * carRigidbody.velocity.magnitude);
                 perturbationDelay = Random.Range(0.5f, 1f);
-            } else {
+            }
+            else
+            {
                 perturbationDelay -= Time.fixedDeltaTime;
             }
         }

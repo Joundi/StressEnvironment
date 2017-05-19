@@ -32,8 +32,10 @@ public class StressEvent_PassengerSpeak : StressEvent_Immediate
     {
         if (vm.Status(0) != 2 && speechStarted) // speech demarré et fini
         {
-
+            speechStarted = false;
+            EndEvent(); 
         }
+
         // EndEvent should be called exclusively when the event ends
         //EndEvent();
     }
