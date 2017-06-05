@@ -1,35 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class StressEvent_PhoneCall : StressEvent_InContainer
-{
+public class StressEvent_PhoneCall : StressEvent_Immediate {
 
-//    public VoiceManager vm;
+	private bool isRinging;
+	public AudioSource audioSource;
+	public Text alertText;
 
-
-
-    protected override void Start()
+	//------------------------------------------------------
+	//  Stress Event Start
+	//------------------------------------------------------
+	override public void StartEvent()
     {
-        base.Start();
+        base.StartEvent();
+		isRinging = true;
+		alertText.text = "Votre téléphone sonne. Prenez-le et rejetez l'appel.";
+	}
 
-    }
 
-    //------------------------------------------------------
-    //  implement the behavior of the event
-    //------------------------------------------------------
-    public override void StartContainerEvent()
-    {
-        base.StartContainerEvent();
+	//------------------------------------------------------
+	//  Stress Event End
+	//------------------------------------------------------
+	override public void EndEvent()
+	{
+		base.EndEvent();
+		alertText.text = "";
+	}
 
-    }
+	void Update() {
+		// Make the phone ring
+		if (isRinging && !audioSource.isPlaying){
+			Debug.Log("play");
+			audioSource.Play();
 
-    //------------------------------------------------------
-    //  Reset event values, prepare it for the next call
-    //------------------------------------------------------
-    public override void EndContainerEvent()
-    {
-        base.EndContainerEvent();
+		}
+		// Make the phone stop
+		if (!isRinging && audioSource.isPlaying){
+			Debug.Log("stop");
+			audioSource.Stop();
+		}
 
-    }
+
+		// Test the player's input to rejet the call
+		if (false){
+			RejectCall();
+		}
+	}
+
+	public void RejectCall(){
+		isRinging = false;
+		// Call the end of the event
+	}
 }

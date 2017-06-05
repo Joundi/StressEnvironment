@@ -46,16 +46,4 @@ public class StreeEvent_FollowingCar : StressEvent_Immediate {
 		isRunning = false;
 		Destroy(followingCar);
     }
-
-	//void FixedUpdate(){
-	//	if (isRunning){
-	//		//Distance since last frame depending on the speed of the car
-	//		currentDistance += carRigidbody.velocity.magnitude * Time.fixedDeltaTime;
-	//		if (currentDistance > intervalTarget){
-	//			followingCarScript.targets.Add(Instantiate(target, carRigidbody.transform.position + new Vector3(0,0.1f,0), Quaternion.identity));
-	//			currentDistance = 0f;
-	//		}
-	//	}
-	//}
-
 }
