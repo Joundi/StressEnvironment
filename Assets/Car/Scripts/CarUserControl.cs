@@ -21,10 +21,15 @@ namespace UnityStandardAssets.Vehicles.Car
             //controllerProperties.wheelRange = wheelRange;
             //LogitechGSDK.LogiSetPreferredControllerProperties(controllerProperties); //THIS FUNCTION CAUSES CRASH WHEN EDITOR STOPPED for Unity version 5+ss!!
             m_Car.m_SteeingWheel.wheelRange = controllerProperties.wheelRange;
+
+            // force keyboard or controller only input, prevent VIVE touchpad input
+            CrossPlatformInputManager.SwitchActiveInputMethod(CrossPlatformInputManager.ActiveInputMethod.Hardware);
+
         }
 
         private void Awake()
         {
+
             // get the car controller
             m_Car = GetComponent<CarController>();
         }
