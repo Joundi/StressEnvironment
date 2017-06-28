@@ -68,8 +68,8 @@ namespace UnityStandardAssets.Vehicles.Car
             else
             {
                 // pass keyboard input to the car
-                h = CrossPlatformInputManager.GetAxis("Horizontal");   // Steering wheel
-                v = CrossPlatformInputManager.GetAxis("Vertical");     // Acceleration forward/backward
+                h = Input.GetAxis("Horizontal");   // Steering wheel
+                v = Input.GetAxis("Vertical");     // Acceleration forward/backward
 #if !MOBILE_INPUT
                 handbrake = CrossPlatformInputManager.GetAxis("Jump"); // Handbrake
 #endif

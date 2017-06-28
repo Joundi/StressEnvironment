@@ -37,16 +37,17 @@ public class PhoneState : MonoBehaviour {
             if (Ringing)
             {
                 sound.Play();
-                mr.material = materials[1];
             }
             else
             {
-                mr.material = materials[0];
                 PhoneCallEnded();
             }
         }
 
-        if(Ringing && controller != null)
+        mr.material = Ringing ? materials[1] : materials[0];
+
+
+        if (Ringing && controller != null)
         {
             try
             {
@@ -57,16 +58,18 @@ public class PhoneState : MonoBehaviour {
                     //Read the touchpad values
                     touchpad = device.GetAxis(EVRButtonId.k_EButton_SteamVR_Touchpad);
 
-                    if (touchpad.x >= 0 - deadzoneradius)
+                    if (touchpad.x <= 0 - deadzoneradius)
                     {
                         CancelledCall = true;
                         Debug.Log("Appel accepter");
+                        PhoneCallEnded();
                     }
 
                     if (touchpad.x >= 0 + deadzoneradius)
                     {
                         CancelledCall = true;
                         Debug.Log("Appel rejeter");
+                        PhoneCallEnded();
                     }
 
                 }
