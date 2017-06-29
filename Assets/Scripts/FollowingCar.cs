@@ -16,6 +16,7 @@ public class FollowingCar : MonoBehaviour {
     private float speedPlayerOld;
     private float destroyCountdown;
     private float reactionTime;
+	private float brakeDuration;
     private float securityDistance;
     public Vector3 lastTranslation;
     private float distance;
@@ -40,51 +41,68 @@ public class FollowingCar : MonoBehaviour {
         disabled = false;
         currentTarget = player;
         distance = -404f;
+		reactionTime = 1f;
     }
 
     void FixedUpdate () {
         // The security distance depends on the player speed.
         // +5 because of the size of both cars, when in collision the Distance between them is 5
         securityDistance = 5 + (speedPlayer * securityDistanceMultiplier);
-        if (!disabled)
+        if (!disabled)	
         {
             speedPlayer = playerRb.velocity.magnitude;
-            speedPlayerOld = speedPlayer;
             if (currentTarget != null)
             {
                 transform.LookAt(currentTarget.transform.position);
 
                 if (distance != -404f){
                     // Player is not braking
-                    if (speedPlayer >= speedPlayerOld)
+					if (speedPlayer + 0.16f >= speedPlayerOld && reactionTime == 1f)
                     {
+						//Debug.Log("speedPlayer: " + speedPlayer + " speedPlayerOld :" + speedPlayerOld);
                         // Brake to respect the minimum distance
                         if (securityDistance >= Vector3.Distance(transform.position, player.transform.position))
                         {
-                            distance *= 0.993f;
+							Debug.Log ("Brake to respect the security distance");
+							distance *= 0.993f;
                         }
                         // Accelerate to reach the player
                         else {
-                            distance *= 1.006f;
+							Debug.Log ("Accelerate to reach the player");
+                            distance *= 1.010f;
                         }
-                        if (reactionTime >= 0) reactionTime = -1;
-
                     } else { // Player is Braking
                         //Initiate the reaction Time
-                        if (reactionTime == -1)
+						Debug.Log("try to brake :");
+						Debug.Log("speedPlayer: " + speedPlayer + " speedPlayerOld :" + speedPlayerOld + " reactionTime :" + reactionTime );
+
+                        if (reactionTime == 1f)
                         {
-                            reactionTime = 1f;
+							reactionTime -= Time.fixedDeltaTime;
+							brakeDuration = 0f;
+							distance = playerRb.velocity.magnitude * Time.fixedDeltaTime;
                         }
                         else
                         {
-                            if (reactionTime == 0)
+							if (reactionTime == 0 && brakeDuration > 0f)
                             {
-                                distance *= brakingMultiplier;
+								//Debug.Log ("Braking");
+								distance *= brakingMultiplier;
+								brakeDuration -= Time.fixedDeltaTime;
                             }
                             else
                             {
-                                reactionTime -= Time.fixedDeltaTime;
-                                if (reactionTime < 0) reactionTime = 0;
+								if (reactionTime > 0f) {
+									distance = playerRb.velocity.magnitude * Time.fixedDeltaTime;
+									reactionTime -= Time.fixedDeltaTime;
+									if (speedPlayer + 0.16f >= speedPlayerOld) {
+										brakeDuration += Time.fixedDeltaTime;
+									}
+									if (reactionTime < 0)
+										reactionTime = 0;
+								} else {
+									reactionTime = 1f;
+								}	
                             }
                         }
                     }
@@ -93,6 +111,7 @@ public class FollowingCar : MonoBehaviour {
                 }
                 transform.position = Vector3.MoveTowards(transform.position, currentTarget.transform.position, distance);
             }
+			speedPlayerOld = speedPlayer;
         } else
         {
             if (destroyCountdown <= 0)
